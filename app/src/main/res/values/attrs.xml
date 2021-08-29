@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TooltipLayout">
+        <attr name="shadowSize" format="float" />
+        <attr name="arrowSize" format="float" />
+        <attr name="bodyCornerRadius" format="float" />
+        <attr name="arrowCornerRadius" format="float" />
+        <attr name="shadowDeltaY" format="float" />
+        <attr name="shadowColor" format="color" />
+    </declare-styleable>
+</resources>
