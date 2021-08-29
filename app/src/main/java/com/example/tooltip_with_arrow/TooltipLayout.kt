@@ -67,12 +67,12 @@ class TooltipLayout : FrameLayout {
             defStyleAttr,
             0
         ).use { typedArray ->
-            shadowSize = typedArray.getFloat(R.styleable.TooltipLayout_shadowSize, 4f)
-            arrowSize = typedArray.getFloat(R.styleable.TooltipLayout_arrowSize, 24f)
-            bodyCornerRadius = typedArray.getFloat(R.styleable.TooltipLayout_bodyCornerRadius, 24f)
-            arrowCornerRadius = typedArray.getFloat(R.styleable.TooltipLayout_arrowCornerRadius, 4f)
+            shadowSize = typedArray.getDimension(R.styleable.TooltipLayout_shadowSize, 2.dp(context))
             shadowColor = typedArray.getColor(R.styleable.TooltipLayout_shadowColor, Color.parseColor("#80888888"))
-            shadowDeltaY = typedArray.getFloat(R.styleable.TooltipLayout_shadowDeltaY, 2f)
+            shadowDeltaY = typedArray.getDimension(R.styleable.TooltipLayout_shadowDeltaY, 1.dp(context))
+            arrowSize = typedArray.getDimension(R.styleable.TooltipLayout_arrowSize, 8.dp(context))
+            arrowCornerRadius = typedArray.getDimension(R.styleable.TooltipLayout_arrowCornerRadius, 1.dp(context))
+            bodyCornerRadius = typedArray.getDimension(R.styleable.TooltipLayout_bodyCornerRadius, 8.dp(context))
         }
 
         // Necessary for onDraw(Canvas) callback to be invoked in ViewGroups.
@@ -110,5 +110,9 @@ class TooltipLayout : FrameLayout {
         // Combine
         tooltipPath.addPath(tooltipArrowPath)
         canvas.drawPath(tooltipPath, paint)
+    }
+
+    private fun Int.dp(context: Context): Float {
+        return this * context.resources.displayMetrics.density
     }
 }

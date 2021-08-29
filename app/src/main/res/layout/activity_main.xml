@@ -8,12 +8,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:arrowCornerRadius="8.0"
-        app:arrowSize="64.0"
-        app:bodyCornerRadius="48.0"
+        app:arrowCornerRadius="2dp"
+        app:arrowSize="28dp"
+        app:bodyCornerRadius="24dp"
         app:shadowColor="@color/purple_200"
-        app:shadowDeltaY="8.0"
-        app:shadowSize="21.0">
+        app:shadowDeltaY="2dp"
+        app:shadowSize="8dp">
 
         <TextView
             android:layout_width="wrap_content"
