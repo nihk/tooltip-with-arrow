@@ -46,8 +46,8 @@ class TooltipLayout : FrameLayout {
             setShadowLayer(shadowSize, 0f, shadowDeltaY, shadowColor)
         }
     }
-    private val tooltipBox by lazy {
-        // Allow space for the shadow and arrow to be drawn
+    private val tooltipBody by lazy {
+        // Body does not include shadows/arrow
         RectF(shadowSize, shadowSize, width - shadowSize, height - shadowSize - arrowSize)
     }
     private val tooltipPath = Path()
@@ -75,7 +75,7 @@ class TooltipLayout : FrameLayout {
             shadowDeltaY = typedArray.getFloat(R.styleable.TooltipLayout_shadowDeltaY, 2f)
         }
 
-        // Necessary for onDraw(Canvas) callback to be invoked.
+        // Necessary for onDraw(Canvas) callback to be invoked in ViewGroups.
         setWillNotDraw(false)
         // Don't let children be drawn outside the bounds of the main tooltip body and/or over the
         // tooltip shadows.
@@ -84,9 +84,8 @@ class TooltipLayout : FrameLayout {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        // Increase the height to accommodate the tooltip arrow. This also keeps children inside
-        // the main tooltip body.
         val currentHeight = MeasureSpec.getSize(measuredHeight)
+        // Increase the height to accommodate the tooltip arrow.
         val heightWithArrow = currentHeight + arrowSize
         val measureSpecHeightWithArrow = MeasureSpec.makeMeasureSpec(heightWithArrow.toInt(), MeasureSpec.EXACTLY)
         setMeasuredDimension(measuredWidth, measureSpecHeightWithArrow)
@@ -94,18 +93,18 @@ class TooltipLayout : FrameLayout {
 
     override fun onDraw(canvas: Canvas) {
         // Trace the main rectangle
-        tooltipPath.addRoundRect(tooltipBox, roundedCorners, Path.Direction.CW)
+        tooltipPath.addRoundRect(tooltipBody, roundedCorners, Path.Direction.CW)
         // Trace the arrow
         with(tooltipArrowPath) {
-            val tooltipCenterX = tooltipBox.centerX()
-            moveTo(tooltipCenterX + arrowSize, tooltipBox.bottom)
-            lineTo(tooltipCenterX + arrowCornerRadius, tooltipBox.bottom + arrowSize - arrowCornerRadius)
+            val tooltipCenterX = tooltipBody.centerX()
+            moveTo(tooltipCenterX + arrowSize, tooltipBody.bottom)
+            lineTo(tooltipCenterX + arrowCornerRadius, tooltipBody.bottom + arrowSize - arrowCornerRadius)
             // Curve bottom arrow tip
             quadTo(
-                tooltipCenterX, tooltipBox.bottom + arrowSize,
-                tooltipCenterX - arrowCornerRadius, tooltipBox.bottom + arrowSize - arrowCornerRadius
+                tooltipCenterX, tooltipBody.bottom + arrowSize,
+                tooltipCenterX - arrowCornerRadius, tooltipBody.bottom + arrowSize - arrowCornerRadius
             )
-            lineTo(tooltipCenterX - arrowSize, tooltipBox.bottom)
+            lineTo(tooltipCenterX - arrowSize, tooltipBody.bottom)
             close()
         }
         // Combine
