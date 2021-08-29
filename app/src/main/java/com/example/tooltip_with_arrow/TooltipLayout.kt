@@ -47,7 +47,7 @@ class TooltipLayout : FrameLayout {
         }
     }
     private val tooltipBody by lazy {
-        // Body does not include shadows/arrow
+        // Body should not include shadows/arrow
         RectF(shadowSize, shadowSize, width - shadowSize, height - shadowSize - arrowSize)
     }
     private val tooltipPath = Path()
@@ -78,21 +78,21 @@ class TooltipLayout : FrameLayout {
         // Necessary for onDraw(Canvas) callback to be invoked in ViewGroups.
         setWillNotDraw(false)
         // Don't let children be drawn outside the bounds of the main tooltip body and/or over the
-        // tooltip shadows.
+        // tooltip shadows/arrow.
         setPadding(shadowSize.toInt())
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val currentHeight = MeasureSpec.getSize(measuredHeight)
-        // Increase the height to accommodate the tooltip arrow.
+        // Increase the current height to accommodate the tooltip arrow.
         val heightWithArrow = currentHeight + arrowSize
         val measureSpecHeightWithArrow = MeasureSpec.makeMeasureSpec(heightWithArrow.toInt(), MeasureSpec.EXACTLY)
         setMeasuredDimension(measuredWidth, measureSpecHeightWithArrow)
     }
 
     override fun onDraw(canvas: Canvas) {
-        // Trace the main rectangle
+        // Trace the body
         tooltipPath.addRoundRect(tooltipBody, roundedCorners, Path.Direction.CW)
         // Trace the arrow
         with(tooltipArrowPath) {
